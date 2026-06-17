@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+jupyter_execute/
+
+
+
+# Models (too large for git)
+models/*.pkl
+models/*.joblib
+models/*.json
+models/*.model
+
+# Data
+data/raw/*.csv
+data/processed/*.csv
+data/processed/*.xlsx
+
+# Reports - generated files only
+reports/*.png
+reports/*.csv
+
+# Power BI
+dashboard/*.pbix
+*.pbix
+dashboard/.pbi
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archive
+archive.zip
