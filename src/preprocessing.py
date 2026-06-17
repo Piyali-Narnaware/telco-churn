@@ -1,10 +1,12 @@
+import os
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
-DATA_PATH = "data/raw/Telco-Customer-Churn.csv"
-PROCESSED_PATH = "data/processed/"
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+DATA_PATH = os.path.join(PROJECT_ROOT, "data", "raw", "Telco-Customer-Churn.csv")
+PROCESSED_PATH = os.path.join(PROJECT_ROOT, "data", "processed") + os.sep
 
 def load_data(path=DATA_PATH):
     df = pd.read_csv(path)

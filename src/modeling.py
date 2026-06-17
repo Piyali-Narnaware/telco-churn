@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import joblib
@@ -8,7 +9,8 @@ from sklearn.metrics import (classification_report, confusion_matrix,
                              average_precision_score)
 import xgboost as xgb
 
-MODEL_PATH = "models/"
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+MODEL_PATH = os.path.join(PROJECT_ROOT, "models") + os.sep
 
 def train_logistic_regression(X_train, y_train):
     model = LogisticRegression(max_iter=1000, random_state=42, class_weight="balanced")

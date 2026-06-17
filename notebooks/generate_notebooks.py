@@ -308,23 +308,22 @@ plt.show()"""),
 
     md("""## 4. Segment Profiles"""),
 
-    code("""segment_summary = df.groupby('Segment').agg({
-    'tenure': 'mean',
-    'MonthlyCharges': 'mean',
-    'TotalCharges': 'mean',
-    'ServiceCount': 'mean',
-    'HasDependents': 'mean',
-    'SeniorCitizen': 'mean',
-    'customerID': 'count'
-}).rename(columns={'customerID': 'Count'})
+    code("""segment_summary = df.groupby('Segment').agg(
+    Count=('tenure', 'size'),
+    AvgTenure=('tenure', 'mean'),
+    AvgMonthlyCharges=('MonthlyCharges', 'mean'),
+    AvgTotalCharges=('TotalCharges', 'mean'),
+    AvgServiceCount=('ServiceCount', 'mean'),
+    PctWithDependents=('HasDependents', 'mean'),
+    PctSenior=('SeniorCitizen', 'mean'),
+).round(2)
 segment_summary['ChurnRate'] = df.groupby('Segment')['Churn'].apply(
-    lambda x: (x == 'Yes').mean() * 100)
+    lambda x: (x == 'Yes').mean() * 100).round(1)
 segment_summary['PctOfBase'] = (segment_summary['Count'] / len(df) * 100).round(1)
-segment_summary = segment_summary.round(2)
 segment_summary"""),
 
     code("""fig, axes = plt.subplots(2, 3, figsize=(16, 10))
-metrics = ['tenure', 'MonthlyCharges', 'ServiceCount', 'ChurnRate', 'Count']
+metrics = ['AvgTenure', 'AvgMonthlyCharges', 'AvgServiceCount', 'ChurnRate', 'Count']
 for i, metric in enumerate(metrics):
     ax = axes[i // 3, i % 3]
     segment_summary[metric].sort_values().plot(kind='barh', ax=ax, color='steelblue')
@@ -366,7 +365,7 @@ print("=" * 50)
 for segment in segment_summary.index:
     churn = segment_summary.loc[segment, 'ChurnRate']
     pct = segment_summary.loc[segment, 'PctOfBase']
-    revenue_impact = segment_summary.loc[segment, 'Count'] * churn / 100 * segment_summary.loc[segment, 'MonthlyCharges']
+    revenue_impact = segment_summary.loc[segment, 'Count'] * churn / 100 * segment_summary.loc[segment, 'AvgMonthlyCharges']
     print(f"{segment}: {pct:.1f}% of base, {churn:.1f}% churn, ~${revenue_impact:.0f}/mo at risk")"""),
 
     md("""---

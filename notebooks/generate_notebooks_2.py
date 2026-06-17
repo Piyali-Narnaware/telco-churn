@@ -408,7 +408,7 @@ print(f"Risk bands: {df['RiskBand'].nunique()}")"""),
 df['AnnualRevenue'] = df['MonthlyCharges'] * 12
 
 revenue_by_segment = df.groupby('Segment').agg(
-    CustomerCount=('customerID', 'count'),
+    CustomerCount=('tenure', 'size'),
     MonthlyRevenue=('MonthlyRevenue', 'sum'),
     ChurnRate=('Churn', lambda x: (x == 'Yes').mean() * 100),
     AvgMonthlySpend=('MonthlyCharges', 'mean')
@@ -447,7 +447,7 @@ print(f"High-value, high-risk customers: {len(high_risk)} ({len(high_risk)/len(d
 print(f"Total monthly revenue at risk from this group: ${high_risk['MonthlyCharges'].sum():,.0f}")
 print(f"Total annual revenue at risk: ${high_risk['MonthlyCharges'].sum() * 12:,.0f}")
 
-high_risk[['customerID', 'tenure', 'MonthlyCharges', 'Contract',
+high_risk[['tenure', 'MonthlyCharges', 'Contract',
             'InternetService', 'RiskScore', 'Segment']].head(10)"""),
 
     md("""## 4. Retention Opportunity Matrix"""),
