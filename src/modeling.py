@@ -7,7 +7,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (classification_report, confusion_matrix,
                              roc_auc_score, precision_recall_curve,
                              average_precision_score)
-import xgboost as xgb
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 MODEL_PATH = os.path.join(PROJECT_ROOT, "models") + os.sep
@@ -21,17 +20,6 @@ def train_random_forest(X_train, y_train, n_estimators=200):
     model = RandomForestClassifier(
         n_estimators=n_estimators, random_state=42,
         class_weight="balanced", n_jobs=-1
-    )
-    model.fit(X_train, y_train)
-    return model
-
-def train_xgboost(X_train, y_train):
-    scale_pos_weight = (y_train == 0).sum() / (y_train == 1).sum()
-    model = xgb.XGBClassifier(
-        n_estimators=200, max_depth=6, learning_rate=0.1,
-        scale_pos_weight=scale_pos_weight,
-        random_state=42, use_label_encoder=False,
-        eval_metric="logloss"
     )
     model.fit(X_train, y_train)
     return model

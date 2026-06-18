@@ -15,7 +15,6 @@ dependencies:
   - xlrd=2.0.*
   - pip
   - pip:
-    - xgboost==1.7.*
     - plotly==5.11.*
     - statsmodels==0.13.*
     - imbalanced-learn==0.10.*

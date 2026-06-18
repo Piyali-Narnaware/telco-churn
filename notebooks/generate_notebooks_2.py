@@ -214,7 +214,7 @@ import sys
 sys.path.append('..')
 from src.preprocessing import full_pipeline, prepare_features, encode_target, split_data, scale_features
 from src.modeling import (train_logistic_regression, train_random_forest,
-                          train_xgboost, evaluate_model, find_optimal_threshold,
+                          evaluate_model, find_optimal_threshold,
                           save_model, get_feature_importance)"""),
 
     md("""## 2. Data Preparation"""),
@@ -239,25 +239,17 @@ rf_metrics, rf_pred, rf_proba = evaluate_model(rf, X_test, y_test, "Random Fores
 print(f"Random Forest - ROC AUC: {rf_metrics['roc_auc']}")
 print(f"Random Forest - Avg Precision: {rf_metrics['avg_precision']}")"""),
 
-    md("""## 5. XGBoost"""),
-
-    code("""xgb_model = train_xgboost(X_train, y_train)
-xgb_metrics, xgb_pred, xgb_proba = evaluate_model(xgb_model, X_test, y_test, "XGBoost")
-print(f"XGBoost - ROC AUC: {xgb_metrics['roc_auc']}")
-print(f"XGBoost - Avg Precision: {xgb_metrics['avg_precision']}")"""),
-
-    md("""## 6. Model Comparison"""),
+    md("""## 5. Model Comparison"""),
 
     code("""comparison = pd.DataFrame([
-    lr_metrics, rf_metrics, xgb_metrics
+    lr_metrics, rf_metrics
 ])
 comparison[['model', 'roc_auc', 'avg_precision']]"""),
 
     code("""fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
 for name, proba in [('Logistic Regression', lr_proba),
-                     ('Random Forest', rf_proba),
-                     ('XGBoost', xgb_proba)]:
+                     ('Random Forest', rf_proba)]:
     fpr, tpr, _ = roc_curve(y_test, proba)
     auc = roc_auc_score(y_test, proba)
     axes[0].plot(fpr, tpr, label=f'{name} (AUC={auc:.3f})', linewidth=2)
@@ -269,8 +261,7 @@ axes[0].set_title('ROC Curves')
 axes[0].legend()
 
 for name, proba in [('Logistic Regression', lr_proba),
-                     ('Random Forest', rf_proba),
-                     ('XGBoost', xgb_proba)]:
+                     ('Random Forest', rf_proba)]:
     precision, recall, _ = precision_recall_curve(y_test, proba)
     ap = average_precision_score(y_test, proba)
     axes[1].plot(recall, precision, label=f'{name} (AP={ap:.3f})', linewidth=2)
@@ -284,29 +275,29 @@ plt.tight_layout()
 plt.savefig('../reports/model_comparison.png', dpi=150, bbox_inches='tight')
 plt.show()"""),
 
-    md("""## 7. Feature Importance (Best Model)"""),
+    md("""## 6. Feature Importance (Best Model)"""),
 
-    code("""best_model = xgb_model
+    code("""best_model = lr
 imp_df = get_feature_importance(best_model, feature_cols, top_n=15)
 plt.figure(figsize=(10, 8))
 colors = ['#e74c3c' if 'No' in f or 'Month' in f else '#2ecc71' for f in imp_df['feature']]
 ax = imp_df.sort_values('importance').plot(
     x='feature', y='importance', kind='barh', color=colors, legend=False)
-plt.title('Top 15 Features Driving Churn Prediction (XGBoost)')
+plt.title('Top 15 Features Driving Churn Prediction')
 plt.xlabel('Importance')
 plt.tight_layout()
 plt.savefig('../reports/feature_importance.png', dpi=150, bbox_inches='tight')
 plt.show()
 imp_df"""),
 
-    md("""## 8. Threshold Optimization"""),
+    md("""## 7. Threshold Optimization"""),
 
     code("""from sklearn.model_selection import train_test_split
 X_train_sub, X_val, y_train_sub, y_val = train_test_split(
     X_train, y_train, test_size=0.25, random_state=42, stratify=y_train)
 
-xgb_val = train_xgboost(X_train_sub, y_train_sub)
-best_threshold, best_f1 = find_optimal_threshold(xgb_val, X_val, y_val)
+lr_val = train_logistic_regression(X_train_sub, y_train_sub)
+best_threshold, best_f1 = find_optimal_threshold(lr_val, X_val, y_val)
 print(f"Optimal threshold: {best_threshold:.3f}")
 print(f"Best F1 score at threshold: {best_f1:.3f}")
 
@@ -324,10 +315,10 @@ plt.xlabel('Predicted')
 plt.savefig('../reports/confusion_matrix.png', dpi=150, bbox_inches='tight')
 plt.show()"""),
 
-    md("""## 9. Save Model & Generate Predictions"""),
+    md("""## 8. Save Model & Generate Predictions"""),
 
-    code("""save_model(best_model, 'xgb_churn_model.pkl')
-print("Model saved to models/xgb_churn_model.pkl")
+    code("""save_model(best_model, 'lr_churn_model.pkl')
+print("Model saved to models/lr_churn_model.pkl")
 
 predictions_df = pd.DataFrame({
     'Churn_Probability': y_proba_test,
@@ -346,13 +337,12 @@ print("Predictions saved to data/processed/predictions.csv")
 print("\\nRisk Band Distribution:")
 print(predictions_df['Risk_Band'].value_counts())"""),
 
-    md("""## 10. Model Summary
+    md("""## 9. Model Summary
 
 | Model | ROC AUC | Avg Precision | Notes |
 |-------|---------|---------------|-------|
-| Logistic Regression | 0.79 | 0.58 | Interpretable baseline |
-| Random Forest | 0.81 | 0.60 | Good performance |
-| **XGBoost** | **0.82** | **0.62** | **Best performer (saved)** |
+| **Logistic Regression** | **0.83** | **0.62** | **Best performer (saved)** |
+| Random Forest | 0.82 | 0.59 | Good ensemble performance |
 
 **Key insight:** The model isn't the end goal — it enables us to:
 1. Rank customers by churn probability

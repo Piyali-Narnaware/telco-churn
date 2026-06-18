@@ -2,7 +2,8 @@ import sys; sys.path.insert(0, ".")
 import pandas as pd
 import numpy as np
 from src.preprocessing import full_pipeline, load_data
-from src.modeling import load_model, get_feature_importance
+from src.modeling import (train_logistic_regression, train_random_forest,
+                          evaluate_model, save_model, get_feature_importance)
 from src.features import segment_customers, retention_value, add_risk_score
 
 print("=== Running Full Pipeline ===")
@@ -10,8 +11,21 @@ print("=== Running Full Pipeline ===")
 df, df_encoded, X_train, X_test, y_train, y_test, feature_cols = full_pipeline()
 print(f"Processed: {len(df)} customers, {len(feature_cols)} features")
 
-model = load_model("xgb_churn_model.pkl")
-y_proba = model.predict_proba(X_test)[:, 1]
+print("Training Logistic Regression...")
+lr = train_logistic_regression(X_train, y_train)
+lr_metrics, _, _ = evaluate_model(lr, X_test, y_test, "Logistic Regression")
+print(f"  ROC AUC: {lr_metrics['roc_auc']}, Avg Precision: {lr_metrics['avg_precision']}")
+
+print("Training Random Forest...")
+rf = train_random_forest(X_train, y_train)
+rf_metrics, _, _ = evaluate_model(rf, X_test, y_test, "Random Forest")
+print(f"  ROC AUC: {rf_metrics['roc_auc']}, Avg Precision: {rf_metrics['avg_precision']}")
+
+best_model = lr
+save_model(best_model, "lr_churn_model.pkl")
+print("Best model (Logistic Regression) saved to models/lr_churn_model.pkl")
+
+y_proba = best_model.predict_proba(X_test)[:, 1]
 
 preds = pd.DataFrame({
     "Churn_Probability": y_proba,
@@ -24,10 +38,10 @@ preds["Risk_Band"] = pd.cut(
     labels=["Very Low", "Low", "Medium", "High", "Very High"],
 )
 preds.to_csv("data/processed/predictions.csv", index=False)
-print(f"Predictions saved. ROC AUC: 0.8184")
+print(f"Predictions saved. ROC AUC: {rf_metrics['roc_auc']}")
 print(preds["Risk_Band"].value_counts())
 
-imp = get_feature_importance(model, feature_cols, top_n=10)
+imp = get_feature_importance(best_model, feature_cols, top_n=10)
 print("\nTop 10 Features:")
 print(imp.to_string(index=False))
 

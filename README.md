@@ -22,7 +22,7 @@ Includes customer demographics, account information, service subscriptions, and 
 │   ├── 01_eda.ipynb            # Exploratory data analysis
 │   ├── 02_segmentation.ipynb   # Customer segmentation (K-Means)
 │   ├── 03_churn_analysis.ipynb # Churn driver identification
-│   ├── 04_risk_model.ipynb     # Predictive churn modeling (XGBoost)
+│   ├── 04_risk_model.ipynb     # Predictive churn modeling (Random Forest)
 │   └── 05_business_report.ipynb # Business recommendations
 ├── src/                        # Reusable Python modules
 │   ├── preprocessing.py        # Data cleaning & feature engineering
@@ -49,9 +49,8 @@ Includes customer demographics, account information, service subscriptions, and 
 
 | Model | ROC AUC | Avg Precision |
 |-------|---------|---------------|
-| Logistic Regression | 0.79 | 0.58 |
-| Random Forest | 0.81 | 0.60 |
-| **XGBoost** | **0.82** | **0.62** |
+| **Logistic Regression** | **0.83** | **0.62** |
+| Random Forest | 0.82 | 0.59 |
 
 ## Business Recommendations
 
@@ -85,7 +84,7 @@ Data source: `data/processed/powerbi_export.csv`
 
 ## Technologies
 
-- Python (pandas, scikit-learn, XGBoost, SHAP)
+- Python (pandas, scikit-learn, SHAP)
 - Jupyter Notebook
 - Power BI
 - Conda
