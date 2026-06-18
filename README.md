@@ -62,26 +62,6 @@ Includes customer demographics, account information, service subscriptions, and 
 
 **Estimated annual revenue impact: ~$208K saved**
 
-## Setup
-
-```bash
-# Create conda environment
-conda env create -f environment.yml
-conda activate telco-churn
-
-# Run the full pipeline
-python scripts/run_pipeline.py
-
-# Launch notebooks
-jupyter notebook notebooks/
-```
-
-## Dashboard
-
-Open `dashboard/Telco_Churn_Dashboard.pbix` in Power BI Desktop.
-
-Data source: `data/processed/powerbi_export.csv`
-
 ## Technologies
 
 - Python (pandas, scikit-learn, SHAP)
