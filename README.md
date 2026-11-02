@@ -43,7 +43,7 @@ Includes customer demographics, account information, service subscriptions, and 
 | Churn rate drops 60% after 12 months tenure | Intervene early |
 | Customers without online security churn 2x more | Bundle opportunity |
 | Electronic check users churn at 45% vs 20% auto-pay | Payment migration |
-| 312 high-value, high-risk customers identified | $48K/mo revenue at risk |
+| 312 high-value, high-risk customers identified | £48K/mo revenue at risk |
 
 ## Model Performance
 
@@ -56,11 +56,11 @@ Includes customer demographics, account information, service subscriptions, and 
 
 1. **Early Tenure Intervention** — Retention offers within first 90 days
 2. **Service Bundles** — Package security + support at discount
-3. **Auto-Pay Migration** — $5/mo discount for electronic check users
+3. **Auto-Pay Migration** — £5/mo discount for electronic check users
 4. **VIP Retention** — Dedicated program for high-value at-risk customers
 5. **Fiber Optic Retention** — Competitive offers for fiber subscribers
 
-**Estimated annual revenue impact: ~$208K saved**
+**Estimated annual revenue impact: ~£208K saved**
 
 ## Technologies
 

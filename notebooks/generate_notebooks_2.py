@@ -418,9 +418,9 @@ values = revenue_by_segment['RevenueAtRisk_Monthly']
 bars = plt.bar(segments, values, color=['#e74c3c', '#f39c12', '#3498db', '#2ecc71', '#9b59b6'])
 for bar, val in zip(bars, values):
     plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 100,
-             f'${val:,.0f}', ha='center', fontweight='bold')
+             f'£{val:,.0f}', ha='center', fontweight='bold')
 plt.title('Monthly Revenue at Risk by Segment')
-plt.ylabel('Monthly Revenue at Risk ($)')
+plt.ylabel('Monthly Revenue at Risk (£)')
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.savefig('../reports/revenue_at_risk.png', dpi=150, bbox_inches='tight')
@@ -434,8 +434,8 @@ plt.show()"""),
 ].copy()
 high_risk.sort_values('MonthlyCharges', ascending=False, inplace=True)
 print(f"High-value, high-risk customers: {len(high_risk)} ({len(high_risk)/len(df)*100:.1f}% of base)")
-print(f"Total monthly revenue at risk from this group: ${high_risk['MonthlyCharges'].sum():,.0f}")
-print(f"Total annual revenue at risk: ${high_risk['MonthlyCharges'].sum() * 12:,.0f}")
+print(f"Total monthly revenue at risk from this group: £{high_risk['MonthlyCharges'].sum():,.0f}")
+print(f"Total annual revenue at risk: £{high_risk['MonthlyCharges'].sum() * 12:,.0f}")
 
 high_risk[['tenure', 'MonthlyCharges', 'Contract',
             'InternetService', 'RiskScore', 'Segment']].head(10)"""),
@@ -454,7 +454,7 @@ scatter = ax.scatter(
 ax.axhline(y=df['MonthlyCharges'].median(), color='red', linestyle='--', alpha=0.5, label='High Value Threshold')
 ax.axvline(x=0.6, color='red', linestyle='--', alpha=0.5, label='High Risk Threshold')
 ax.set_xlabel('Risk Score (0-1)')
-ax.set_ylabel('Monthly Charges ($)')
+ax.set_ylabel('Monthly Charges (£)')
 ax.set_title('Retention Opportunity Matrix\\n(Target: Top-Right Quadrant)')
 cbar = plt.colorbar(scatter)
 cbar.set_label('Tenure (months)')
@@ -477,31 +477,31 @@ Based on the analysis, here are the key findings and recommended actions:"""),
 - Schedule check-in calls at day 30, 60, 90
 
 **Expected Impact:** If 20% of at-risk new customers accept, ~140 customers retained/year
-- Revenue saved: ~$42,000/year"""),
+- Revenue saved: ~£42,000/year"""),
 
     md("""### Recommendation 2: Service Adoption Bundles
 
 **Finding:** Customers without online security (63% churn) and tech support (57% churn) are highly likely to leave.
 
 **Action:** Bundle security and support into mid-tier plans
-- Create a "Peace of Mind" bundle: Online Security + Tech Support + Online Backup at $10/mo
+- Create a "Peace of Mind" bundle: Online Security + Tech Support + Online Backup at £10/mo
 - Offer first 3 months free to month-to-month customers
 
-**Expected Impact:** $15/mo additional ARPU from converted customers + reduced churn"""),
+**Expected Impact:** £15/mo additional ARPU from converted customers + reduced churn"""),
 
     md("""### Recommendation 3: Payment Method Migration
 
 **Finding:** Electronic check users churn at 45% vs 20% for auto-pay users.
 
 **Action:** Incentivize automatic payment switching
-- Offer $5/mo discount for auto-pay setup
+- Offer £5/mo discount for auto-pay setup
 - Send targeted email campaign to electronic check users with >6 months tenure
 
-**Expected Impact:** 15% conversion rate → $28,000/year in retained revenue"""),
+**Expected Impact:** 15% conversion rate → £28,000/year in retained revenue"""),
 
     md("""### Recommendation 4: High-Value Retention Program
 
-**Finding:** 312 high-value customers (top quartile spend, high risk) represent $48K/mo in revenue at risk.
+**Finding:** 312 high-value customers (top quartile spend, high risk) represent £48K/mo in revenue at risk.
 
 **Action:** VIP retention program
 - Dedicated account manager
@@ -518,7 +518,7 @@ Based on the analysis, here are the key findings and recommended actions:"""),
 - Bundle streaming services at discount
 - Annual contract with price lock
 
-**Expected Impact:** Reduce fiber churn by 10pp → $55,000/year retained"""),
+**Expected Impact:** Reduce fiber churn by 10pp → £55,000/year retained"""),
 
     md("""## 6. Projected Business Impact Summary"""),
 
@@ -542,7 +542,7 @@ Based on the analysis, here are the key findings and recommended actions:"""),
     'Time_to_Impact': ['3 months', '1 month', '1 month', '6 months', '3 months']
 })
 recommendations['Est_Annual_Revenue_Saved_Formatted'] = recommendations['Est_Annual_Revenue_Saved'].apply(
-    lambda x: f'${x:,}')
+    lambda x: f'£{x:,}')
 recommendations[['Recommendation', 'Target_Segment', 'Est_Annual_Revenue_Saved_Formatted',
                  'Implementation_Difficulty', 'Time_to_Impact']]"""),
 
@@ -552,9 +552,9 @@ recommendations[['Recommendation', 'Target_Segment', 'Est_Annual_Revenue_Saved_F
 |--------|-------|
 | Current churn rate | 26.5% |
 | Customers at high risk | ~1,850 (26% of base) |
-| Monthly revenue at risk | ~$155K |
-| Annual revenue at risk | ~$1.86M |
-| Targetable with recommendations | ~$208K/year saved |
+| Monthly revenue at risk | ~£155K |
+| Annual revenue at risk | ~£1.86M |
+| Targetable with recommendations | ~£208K/year saved |
 | Primary churn drivers | Contract type, tenure, service adoption, payment method"""),
 
     md("""---

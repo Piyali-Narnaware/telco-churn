@@ -176,7 +176,7 @@ axes[0].hist([df[df['Churn']=='No']['MonthlyCharges'],
               df[df['Churn']=='Yes']['MonthlyCharges']],
              bins=30, label=['Stayed', 'Churned'],
              color=['#2ecc71', '#e74c3c'], alpha=0.7)
-axes[0].set_xlabel('Monthly Charges ($)')
+axes[0].set_xlabel('Monthly Charges (£)')
 axes[0].set_ylabel('Customers')
 axes[0].set_title('Monthly Charges Distribution by Churn')
 axes[0].legend()
@@ -366,7 +366,7 @@ for segment in segment_summary.index:
     churn = segment_summary.loc[segment, 'ChurnRate']
     pct = segment_summary.loc[segment, 'PctOfBase']
     revenue_impact = segment_summary.loc[segment, 'Count'] * churn / 100 * segment_summary.loc[segment, 'AvgMonthlyCharges']
-    print(f"{segment}: {pct:.1f}% of base, {churn:.1f}% churn, ~${revenue_impact:.0f}/mo at risk")"""),
+    print(f"{segment}: {pct:.1f}% of base, {churn:.1f}% churn, ~£{revenue_impact:.0f}/mo at risk")"""),
 
     md("""---
 *End of 02 — Customer Segmentation*""")
