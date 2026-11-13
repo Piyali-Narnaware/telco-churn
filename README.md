@@ -1,8 +1,8 @@
 # Telecom Customer Churn | Retention Analysis
 
-**Question:** Which observable customer characteristics could help a telecom provider prioritise retention research?
+**Aim:** Which observable customer characteristics could help a telecom provider prioritise retention research?
 
-This is an exploratory project based on IBM's public Telco Customer Churn sample. It combines data preparation, segmentation and classification with a proposed retention workflow. No retention campaign was run, and no revenue was recovered.
+I used IBM's public Telco Customer Churn sample to explore which account and service characteristics are associated with churn. It combines data preparation, segmentation and classification with a proposed retention workflow. I haven't tested any retention offers or measured recovered revenue.
 
 ## Analysis approach
 
@@ -22,7 +22,7 @@ The code is organised into [reusable modules](src/) and a [pipeline script](scri
 | Which customers might warrant outreach? | Compare model scores, contact cost and customer value |
 | Which interventions work? | Run a controlled test before claiming retention uplift |
 
-**Do not treat these associations as causes.** An apparent difference between groups may reflect tenure, customer mix or other factors.
+These comparisons are associations, not evidence of cause and effect. An apparent difference between groups may reflect tenure, customer mix or other factors.
 
 ## Model and validation status
 
