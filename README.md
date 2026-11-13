@@ -1,74 +1,51 @@
-# Customer Churn & Retention Intelligence
+# Telecom Customer Churn | Retention Analysis
 
-Predictive churn analysis and retention strategy for a subscription-based telecom company.
+**Question:** Which observable customer characteristics could help a telecom provider prioritise retention research?
 
-## Overview
+This is an exploratory project based on IBM's public Telco Customer Churn sample. It combines data preparation, segmentation and classification with a proposed retention workflow. No retention campaign was run, and no revenue was recovered.
 
-An analysis of customer churn using the IBM sample telecom dataset. The repository contains data preparation, segmentation, classification models and exploratory retention scenarios. The retention ideas are proposals, not interventions tested with customers.
+## Analysis approach
 
-## Dataset
+1. Prepare customer, account, contract and service fields
+2. Examine churn patterns by tenure, contract type, payment method and services
+3. Compare predictive models and review their errors
+4. Translate observed patterns into hypotheses for retention testing
 
-**Telco Customer Churn** (IBM Sample — 7,043 customers, 21 features)
+The code is organised into [reusable modules](src/) and a [pipeline script](scripts/run_pipeline.py).
 
-Includes customer demographics, account information, service subscriptions, and churn status.
+## Business questions
 
-## Project Structure
+| Question | Possible follow-up |
+|---|---|
+| Does churn vary across contract types and tenure? | Investigate onboarding and renewal experiences |
+| Do payment methods coincide with different churn rates? | Test whether payment friction contributes |
+| Which customers might warrant outreach? | Compare model scores, contact cost and customer value |
+| Which interventions work? | Run a controlled test before claiming retention uplift |
 
+**Do not treat these associations as causes.** An apparent difference between groups may reflect tenure, customer mix or other factors.
+
+## Model and validation status
+
+The repository includes classification code and exploratory risk scoring. The latest automated check verifies Python syntax, **not** end-to-end model performance. Previously reported ROC AUC, average precision and financial exposure figures have therefore been omitted from this summary until reproduced from a documented run.
+
+The rule-based `RiskScore` is a heuristic, **not** a calibrated churn probability. Historical segmentation that uses actual churn status must not be used as if it were a prospective prediction.
+
+## Reproduce
+
+The raw CSV is not included. Obtain the IBM Telco Customer Churn sample and place it at:
+
+```text
+data/raw/Telco-Customer-Churn.csv
 ```
-├── data/
-│   ├── raw/                    # Original dataset
-│   └── processed/              # Cleaned data, predictions, Power BI export
-├── notebooks/
-│   ├── 01_eda.ipynb            # Exploratory data analysis
-│   ├── 02_segmentation.ipynb   # Customer segmentation (K-Means)
-│   ├── 03_churn_analysis.ipynb # Churn driver identification
-│   ├── 04_risk_model.ipynb     # Predictive churn modeling (Random Forest)
-│   └── 05_business_report.ipynb # Business recommendations
-├── src/                        # Reusable Python modules
-│   ├── preprocessing.py        # Data cleaning & feature engineering
-│   ├── features.py             # Segmentation, risk scoring
-│   ├── segmentation.py         # K-Means clustering
-│   └── modeling.py             # Model training & evaluation
-├── dashboard/                  # Power BI files
-├── models/                     # Trained model artifacts
-├── reports/                    # Generated charts and outputs
-└── scripts/                    # Pipeline execution scripts
+
+Install the dependencies specified in [`environment.yml`](environment.yml), then run from the repository root:
+
+```bash
+python scripts/run_pipeline.py
 ```
 
-## Key Findings
+Check the outputs in `data/processed/` and the saved model in `models/`. The pipeline preserves customer IDs in the prediction export for review.
 
-| Finding | Impact |
-|---------|--------|
-| Month-to-month contracts are 3x more likely to churn | 45.8% of model importance |
-| Churn rate drops 60% after 12 months tenure | Intervene early |
-| Customers without online security churn 2x more | Bundle opportunity |
-| Electronic check users churn at 45% vs 20% auto-pay | Payment migration |
-| 312 high-value, high-risk customers identified | £48K/mo revenue at risk |
+## Limits and next step
 
-## Model Performance
-
-| Model | ROC AUC | Avg Precision |
-|-------|---------|---------------|
-| **Logistic Regression** | **0.83** | **0.62** |
-| Random Forest | 0.82 | 0.59 |
-
-## Business Recommendations
-
-1. **Early Tenure Intervention** — Retention offers within first 90 days
-2. **Service Bundles** — Package security + support at discount
-3. **Auto-Pay Migration** — £5/mo discount for electronic check users
-4. **VIP Retention** — Dedicated program for high-value at-risk customers
-5. **Fiber Optic Retention** — Competitive offers for fiber subscribers
-
-The retention proposals have not been tested, so no realised or validated annual savings are claimed.
-
-## Reproducing the analysis
-
-The source CSV is not stored in this repository. Obtain the IBM Telco Customer Churn sample dataset and save it as `data/raw/Telco-Customer-Churn.csv`, then run `python scripts/run_pipeline.py` from the repository root after installing the dependencies in `environment.yml`. The pipeline preserves source customer IDs in the BI export. The rule-based `RiskScore` is a heuristic, not a calibrated model probability; segment labels and retention-value estimates are exploratory. Model results in this README should be rechecked against a fresh run.
-
-## Technologies
-
-- Python (pandas, scikit-learn, SHAP)
-- Jupyter Notebook
-- Power BI
-- Conda
+This is a public sample-data exercise, not professional telecom retention experience. Before using the model operationally, it would need a reproducible holdout evaluation, leakage checks, probability calibration, a prospective customer-scoring design and a measured intervention test.
