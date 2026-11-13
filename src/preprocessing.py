@@ -12,7 +12,6 @@ def load_data(path=DATA_PATH):
     df = pd.read_csv(path)
     df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
     df.dropna(inplace=True)
-    df.drop("customerID", axis=1, inplace=True)
     return df
 
 def create_demographic_features(df):
@@ -90,7 +89,7 @@ def full_pipeline():
     df = create_contract_features(df)
     df = create_payment_features(df)
     df = create_spend_features(df)
-    df_encoded = prepare_features(df)
+    df_encoded = prepare_features(df.drop(columns=["customerID"]))
     df_encoded, le = encode_target(df_encoded)
     feature_cols = [c for c in df_encoded.columns if c not in ["Churn", "ChurnTarget"]]
     X = df_encoded[feature_cols]
