@@ -96,6 +96,7 @@ def full_pipeline():
     y = df_encoded["ChurnTarget"]
     X_train, X_test, y_train, y_test = split_data(X, y)
     X_train_s, X_test_s, scaler = scale_features(X_train, X_test)
+    os.makedirs(PROCESSED_PATH, exist_ok=True)
     df.to_csv(PROCESSED_PATH + "telco_processed.csv", index=False)
     df_encoded.to_csv(PROCESSED_PATH + "telco_encoded.csv", index=False)
     X_train_s.to_csv(PROCESSED_PATH + "X_train.csv", index=False)
