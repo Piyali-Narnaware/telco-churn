@@ -38,7 +38,7 @@ preds["Risk_Band"] = pd.cut(
     labels=["Very Low", "Low", "Medium", "High", "Very High"],
 )
 preds.to_csv("data/processed/predictions.csv", index=False)
-print(f"Predictions saved. ROC AUC: {rf_metrics['roc_auc']}")
+print(f"Predictions saved. ROC AUC: {lr_metrics['roc_auc']}")
 print(preds["Risk_Band"].value_counts())
 
 imp = get_feature_importance(best_model, feature_cols, top_n=10)
@@ -58,8 +58,8 @@ df_raw = create_spend_features(df_raw)
 df_raw = segment_customers(df_raw)
 df_raw = retention_value(df_raw)
 df_raw = add_risk_score(df_raw)
-df_raw = df_raw.reset_index(drop=False)
-df_raw["CustomerID"] = df_raw.index.astype(str)
+df_raw = df_raw.reset_index(drop=True)
+df_raw = df_raw.rename(columns={"customerID": "CustomerID"})
 
 export = df_raw[[
     "CustomerID", "gender", "SeniorCitizen", "Partner", "Dependents",
