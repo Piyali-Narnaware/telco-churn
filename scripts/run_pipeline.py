@@ -1,4 +1,7 @@
-import sys; sys.path.insert(0, ".")
+import sys
+from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 import pandas as pd
 import numpy as np
 from src.preprocessing import full_pipeline, load_data
@@ -28,6 +31,7 @@ print("Best model (Logistic Regression) saved to models/lr_churn_model.pkl")
 y_proba = best_model.predict_proba(X_test)[:, 1]
 
 preds = pd.DataFrame({
+    "CustomerID": df.loc[y_test.index, "customerID"].values,
     "Churn_Probability": y_proba,
     "Predicted_Churn": (y_proba >= 0.5).astype(int),
     "Actual_Churn": y_test.values,
@@ -35,9 +39,10 @@ preds = pd.DataFrame({
 preds["Risk_Band"] = pd.cut(
     preds["Churn_Probability"],
     bins=[0, 0.2, 0.4, 0.6, 0.8, 1.0],
+    include_lowest=True,
     labels=["Very Low", "Low", "Medium", "High", "Very High"],
 )
-preds.to_csv("data/processed/predictions.csv", index=False)
+preds.to_csv(ROOT / "data/processed/predictions.csv", index=False)
 print(f"Predictions saved. ROC AUC: {lr_metrics['roc_auc']}")
 print(preds["Risk_Band"].value_counts())
 
@@ -71,6 +76,6 @@ export = df_raw[[
     "AvgMonthlySpend", "TenureGroup", "Churn",
     "HasOnlineSecurity", "HasTechSupport", "HasOnlineBackup",
 ]]
-export.to_csv("data/processed/powerbi_export.csv", index=False)
+export.to_csv(ROOT / "data/processed/powerbi_export.csv", index=False)
 print(f"Exported {len(export)} rows to data/processed/powerbi_export.csv")
 print("Done")
