@@ -45,6 +45,7 @@ def find_optimal_threshold(model, X_val, y_val):
     return best_threshold, best_f1
 
 def save_model(model, filename):
+    os.makedirs(MODEL_PATH, exist_ok=True)
     joblib.dump(model, MODEL_PATH + filename)
 
 def load_model(filename):
