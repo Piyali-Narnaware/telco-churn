@@ -4,7 +4,7 @@ Predictive churn analysis and retention strategy for a subscription-based teleco
 
 ## Overview
 
-A complete analytical workflow from raw customer data to actionable business recommendations. This project demonstrates the full lifecycle of a commercial analytics engagement: data exploration, customer segmentation, churn driver identification, predictive modeling, and data-driven retention strategy.
+An analysis of customer churn using the IBM sample telecom dataset. The repository contains data preparation, segmentation, classification models and exploratory retention scenarios. The retention ideas are proposals, not interventions tested with customers.
 
 ## Dataset
 
@@ -60,7 +60,11 @@ Includes customer demographics, account information, service subscriptions, and 
 4. **VIP Retention** — Dedicated program for high-value at-risk customers
 5. **Fiber Optic Retention** — Competitive offers for fiber subscribers
 
-**Estimated annual revenue impact: ~£208K saved**
+The retention proposals have not been tested, so no realised or validated annual savings are claimed.
+
+## Reproducing the analysis
+
+The source CSV is not stored in this repository. Obtain the IBM Telco Customer Churn sample dataset and save it as `data/raw/Telco-Customer-Churn.csv`, then run `python scripts/run_pipeline.py` from the repository root after installing the dependencies in `environment.yml`. The pipeline preserves source customer IDs in the BI export. The rule-based `RiskScore` is a heuristic, not a calibrated model probability; segment labels and retention-value estimates are exploratory. Model results in this README should be rechecked against a fresh run.
 
 ## Technologies
 
